@@ -47,6 +47,7 @@ public class RedBlackTree<T extends Comparable<T>> {
                 if(next.leftChild != null) q.add(next.leftChild);
                 if(next.rightChild != null) q.add(next.rightChild);
                 output += next.data.toString();
+                //output += next.isBlack;
                 if(!q.isEmpty()) output += ", ";
             }
             return output + "]";
@@ -139,9 +140,13 @@ public class RedBlackTree<T extends Comparable<T>> {
     public String toString() { return root.toString(); } 
     
     private void enforceRBTreePropertiesAfterInsert(Node<T> newNode) {
-    	if (newNode == root)
+    	if (newNode == this.root)
     		return ;
+
     	Node<T> parentNode = newNode.parent;
+    	
+    	 if (parentNode == this.root || parentNode.isBlack) return;
+    	 
     	// Creating a uncle node, and identify which side is uncle node belonged.
     	Node<T> uncle;
     	if(parentNode.isLeftChild())
@@ -293,7 +298,6 @@ public class RedBlackTree<T extends Comparable<T>> {
                 if(parent.data.compareTo(parent.parent.data)>0) {
                     parent.parent.rightChild = child;
                     child.parent = parent.parent;
-
                     parent.rightChild = child.leftChild;
                     child.leftChild = parent;
                     parent.parent = child;
@@ -310,4 +314,36 @@ public class RedBlackTree<T extends Comparable<T>> {
             }
         }
     } 
+    
+    /////////Here is my personal main test, it passed.
+//    public static void main(String[] args) {
+//   	 	RedBlackTree<Integer> node = new RedBlackTree<Integer>();
+//   	 	node.insert(23);
+//   	 	boolean a1 = node.root.isBlack;
+//   	 	node.insert(41);   	 	
+//   	 	node.insert(7); 	 	
+//   	 	node.insert(6);
+//   	 	node.insert(31);  	 	
+//   	 	node.insert(68);  	 	
+//      	node.insert(91);     	
+//        node.insert(13);     
+//        node.insert(28);
+//        node.insert(88);
+//        node.insert(19);
+//        node.insert(20);
+//        node.insert(21);
+//        node.insert(22);
+//   	 boolean a3 = node.root.rightChild.isBlack;
+//   	 boolean a2 = node.root.leftChild.isBlack;
+//   	 boolean a4 = node.root.leftChild.leftChild.isBlack;
+//   	 boolean a5 = node.root.leftChild.rightChild.isBlack;
+//   	 boolean a6 = node.root.rightChild.leftChild.isBlack;
+//   	 boolean a7 = node.root.rightChild.rightChild.isBlack;
+//
+//        
+//        String a = node.root.toString();
+//        System.out.println(a);
+//        System.out.println(a1+" "+a2+" "+a3+" "+a4+" "+a5+" "+a6+" "+a7+" ");
+//   }
+//    
 }   
